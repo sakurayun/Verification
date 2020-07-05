@@ -16,7 +16,8 @@ public class VTimer extends TimerTask {
     public void run() {
         long memberid = memberJoinEvent.getMember().getId();
         if(VMain.vlist.contains(memberid)) {
-            memberJoinEvent.getGroup().sendMessage(MessageUtils.newChain(new At(memberJoinEvent.getMember())+"未能通过加群验证，他离开了我们"));
+            memberJoinEvent.getGroup().sendMessage(MessageUtils.newChain(new At(memberJoinEvent.getMember()))
+                    .plus("未能通过加群验证，他离开了我们"));
             memberJoinEvent.getMember().kick();
         }
         VMain.vlist.remove(memberid);
