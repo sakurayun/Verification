@@ -14,7 +14,7 @@ public class VMessageListener implements Consumer <GroupMessageEvent> {
             int vercode = VMain.verification.getInt(String.valueOf(memberid));//获取对应验证码
 
             if(event.getMessage().contentToString().equals(String.valueOf(vercode))) {
-                VMain.vlist.remove(memberid);
+                VMain.removeverMember(memberid);
                 event.getGroup().sendMessage(MessageUtils.newChain("恭喜你！")
                         .plus(new At(event.getSender()))
                         .plus("\n你已经通过了加群验证！"));

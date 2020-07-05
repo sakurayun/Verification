@@ -15,7 +15,7 @@ public class VMain extends PluginBase {
 
     public static void removeverMember(long memberid) {
         vlist.remove(memberid);
-        verification.exist(String.valueOf(memberid));
+        verification.set(String.valueOf(memberid),0);
         verification.save();
     }
 

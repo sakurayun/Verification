@@ -21,7 +21,7 @@ public class VMemberJoinEvent implements Consumer<MemberJoinEvent> {
         Timer timer = new Timer();
         event.getGroup().sendMessage(MessageUtils.newChain("欢迎新成员")
                 .plus(new At(newmember))
-                .plus("加入本群\n在与群友进行友好交流之前，请先输入验证码："+code+" 你有"+VMain.config.getInt("timeout")*1000+"秒的时间"));
+                .plus("加入本群\n在与群友进行友好交流之前，请先输入验证码："+code+" 你有"+VMain.config.getInt("timeout")+"秒的时间"));
         timer.schedule(new VTimer(event),VMain.config.getInt("timeout")*1000);
     }
 }
