@@ -15,12 +15,13 @@ public class VTimer extends TimerTask {
     @Override
     public void run() {
         long memberid = memberJoinEvent.getMember().getId();
-        if(VMain.vlist.contains(memberid)) {
+        long groupid = memberJoinEvent.getGroup().getId();
+        if(VMain.checkverMember(memberid,groupid)) {
             memberJoinEvent.getGroup().sendMessage(MessageUtils.newChain(new At(memberJoinEvent.getMember()))
                     .plus("未能通过加群验证，他离开了我们"));
+            VMain.removeverMember(memberid,groupid);
             memberJoinEvent.getMember().kick();
         }
-        VMain.vlist.remove(memberid);
         this.cancel();
     }
 }
