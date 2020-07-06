@@ -1,9 +1,13 @@
 package shrbox.github.verification;
 
+import net.mamoe.mirai.console.command.BlockingCommand;
+import net.mamoe.mirai.console.command.CommandSender;
+import net.mamoe.mirai.console.command.JCommandManager;
 import net.mamoe.mirai.console.plugins.Config;
 import net.mamoe.mirai.console.plugins.PluginBase;
 import net.mamoe.mirai.event.events.MemberJoinEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +28,7 @@ public class VMain extends PluginBase {
         String checkid = s_memberid+"_"+s_groupid;
         vlist.remove(checkid);
         verification.set(checkid,0);
-        getPluginmain().getLogger().info("删除ID："+checkid);
+        //getPluginmain().getLogger().info("删除ID："+checkid);
     }
 
     public static void addverMember(long memberid,long groupid,int code) {
@@ -51,18 +55,34 @@ public class VMain extends PluginBase {
         return verification.getInt(checkid);
     }
 
+    public void registerCommands() {
+        JCommandManager.getInstance().register(this, new BlockingCommand( //注册command
+                "verreload", new ArrayList<>(),"重载Verification配置文件","/verreload"
+        ) {
+            @Override
+            public boolean onCommandBlocking(@NotNull CommandSender commandSender, @NotNull List<String> list) {
+                loadConfigFiles();
+                commandSender.sendMessageBlocking("重载成功");
+                return true;
+            }
+        });
+    }
+
     public void onLoad() {}
     public static void loadConfigFiles() {
-        Collections.addAll(groupList, 114514L, 1919810L);
-        config.setIfAbsent("enable_group",groupList);
+        config = getPluginmain().loadConfig("config.yml");
+        List<Long> templist = new ArrayList<>();
+        Collections.addAll(templist, 114514L, 1919810L);
+        config.setIfAbsent("enable_group",templist);
         config.setIfAbsent("timeout", 300);
         config.save();
+        templist.clear();
         groupList = config.getLongList("enable_group");
     }
 
     public void onEnable() {
         pluginmain = this;
-        config = loadConfig("config.yml");
+        registerCommands();
         verification = loadConfig("verification.yml");//新成员对应验证码存储文件
         loadConfigFiles();
 
