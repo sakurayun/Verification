@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 public class VMessageListener implements Consumer <GroupMessageEvent> {
     @Override
     public void accept(GroupMessageEvent event) {
-        if(event.getGroup().getBotPermission().getLevel()==0||!VMain.groupList.contains(event.getGroup().getId())) {
+        if(event.getGroup().getBotPermission().getLevel()==0||!VMain.config.getLongList("enable_group").contains(event.getGroup().getId())) {
             return;//如果机器人权限不足或该群不在开启的群列表内
         }
         //event.getGroup().sendMessage("JoinEvent权限足够");

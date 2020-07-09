@@ -14,13 +14,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class VMain extends PluginBase {
-    private static VMain pluginmain;
+    private static VMain plugin;
     public static Config config;
     public static Config verification;
-    public static List<Long> groupList = new ArrayList<>();
     public static List<String> vlist = new ArrayList<>();
-    public static VMain getPluginmain() {
-        return pluginmain;
+    public static VMain getPlugin() {
+        return plugin;
     }
     public static void removeverMember(long memberid,long groupid) {
         String s_memberid = String.valueOf(memberid);
@@ -28,7 +27,7 @@ public class VMain extends PluginBase {
         String checkid = s_memberid+"_"+s_groupid;
         vlist.remove(checkid);
         verification.set(checkid,0);
-        //getPluginmain().getLogger().info("删除ID："+checkid);
+        //getPlugin().getLogger().info("删除ID："+checkid);
     }
 
     public static void addverMember(long memberid,long groupid,int code) {
@@ -37,13 +36,13 @@ public class VMain extends PluginBase {
         String checkid = s_memberid+"_"+s_groupid;
         vlist.add(checkid);//添加新成员到List
         verification.set(checkid,code);
-        //getPluginmain().getLogger().info("添加ID："+checkid);
+        //getPlugin().getLogger().info("添加ID："+checkid);
     }
 
     public static boolean checkverMember(long memberid,long groupid) {
         String s_memberid = String.valueOf(memberid);
         String s_groupid = String.valueOf(groupid);
-        //getPluginmain().getLogger().info("检查返回值："+vlist.contains(s_memberid + "_" + s_groupid));
+        //getPlugin().getLogger().info("检查返回值："+vlist.contains(s_memberid + "_" + s_groupid));
         return vlist.contains(s_memberid + "_" + s_groupid);
     }
 
@@ -51,7 +50,7 @@ public class VMain extends PluginBase {
         String s_memberid = String.valueOf(memberid);
         String s_groupid = String.valueOf(groupid);
         String checkid = s_memberid+"_"+s_groupid;
-        //getPluginmain().getLogger().info("返回值："+verification.getInt(checkid));
+        //getPlugin().getLogger().info("返回值："+verification.getInt(checkid));
         return verification.getInt(checkid);
     }
 
@@ -70,18 +69,17 @@ public class VMain extends PluginBase {
 
     public void onLoad() {}
     public static void loadConfigFiles() {
-        config = getPluginmain().loadConfig("config.yml");
+        config = getPlugin().loadConfig("config.yml");
         List<Long> templist = new ArrayList<>();
         Collections.addAll(templist, 114514L, 1919810L);
         config.setIfAbsent("enable_group",templist);
         config.setIfAbsent("timeout", 300);
         config.save();
         templist.clear();
-        groupList = config.getLongList("enable_group");
     }
 
     public void onEnable() {
-        pluginmain = this;
+        plugin = this;
         registerCommands();
         verification = loadConfig("verification.yml");//新成员对应验证码存储文件
         loadConfigFiles();

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public class VMemberJoinEvent implements Consumer<MemberJoinEvent> {
     @Override
     public void accept(MemberJoinEvent event) {
-        if(event.getGroup().getBotPermission().getLevel()==0|| !VMain.groupList.contains(event.getGroup().getId())) {
+        if(event.getGroup().getBotPermission().getLevel()==0|| !VMain.config.getLongList("enable_group").contains(event.getGroup().getId())) {
             return;//如果机器人权限不足或该群不在开启的群列表内
         }
         Member newmember = event.getMember();
