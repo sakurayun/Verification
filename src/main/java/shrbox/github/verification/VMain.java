@@ -27,7 +27,6 @@ public class VMain extends PluginBase {
         String checkid = s_memberid+"_"+s_groupid;
         vlist.remove(checkid);
         verification.set(checkid,0);
-        //getPlugin().getLogger().info("删除ID："+checkid);
     }
 
     public static void addverMember(long memberid,long groupid,int code) {
@@ -36,13 +35,11 @@ public class VMain extends PluginBase {
         String checkid = s_memberid+"_"+s_groupid;
         vlist.add(checkid);//添加新成员到List
         verification.set(checkid,code);
-        //getPlugin().getLogger().info("添加ID："+checkid);
     }
 
     public static boolean checkverMember(long memberid,long groupid) {
         String s_memberid = String.valueOf(memberid);
         String s_groupid = String.valueOf(groupid);
-        //getPlugin().getLogger().info("检查返回值："+vlist.contains(s_memberid + "_" + s_groupid));
         return vlist.contains(s_memberid + "_" + s_groupid);
     }
 
@@ -50,12 +47,11 @@ public class VMain extends PluginBase {
         String s_memberid = String.valueOf(memberid);
         String s_groupid = String.valueOf(groupid);
         String checkid = s_memberid+"_"+s_groupid;
-        //getPlugin().getLogger().info("返回值："+verification.getInt(checkid));
         return verification.getInt(checkid);
     }
 
     public void registerCommands() {
-        JCommandManager.getInstance().register(this, new BlockingCommand( //注册command
+        JCommandManager.getInstance().register(this, new BlockingCommand(
                 "verreload", new ArrayList<>(),"重载Verification配置文件","/verreload"
         ) {
             @Override
@@ -81,7 +77,7 @@ public class VMain extends PluginBase {
     public void onEnable() {
         plugin = this;
         registerCommands();
-        verification = loadConfig("verification.yml");//新成员对应验证码存储文件
+        verification = loadConfig("verification.yml");//并没有什么卵用，只为了对应验证码
         loadConfigFiles();
 
         getLogger().info("Plugin enabled!");
